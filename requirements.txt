@@ -1,0 +1,5 @@
+# Dependencias reales del ejemplo. No incluye el reporter ficticio.
+robotframework==7.5
+robotframework-requests==0.9.7
+# Solo para tests/distribuidores_ddt.robot:
+robotframework-datadriver==1.11.2
