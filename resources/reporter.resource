@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    Contrato de importación propuesto. APICaseReporter NO existe todavía.
+Documentation    Librería real instalada desde PyPI; listener automático por caso.
 Library          APICaseReporter
 ...              output_dir=${OUTPUT DIR}${/}cases
 ...              language=en

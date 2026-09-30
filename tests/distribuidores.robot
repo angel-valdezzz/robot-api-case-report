@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation       Ejemplo de uso de un reporter propuesto; todavía no es ejecutable.
+Documentation       Ejemplo ejecutable con APICaseReporter y RequestsLibrary.
 Resource            ../resources/distribuidores.resource
 Resource            ../resources/validaciones.resource
 
@@ -17,4 +17,4 @@ DIST-002 Validar datos del distribuidor
 
     Verificar datos del distribuidor    ${request_id}    ${distribuidor}    AGENTE    FISICA
 
-    # No hay Generate Report: el listener propuesto escribe este HTML en end_test.
+    # No hay Generate Report: el listener escribe este HTML en end_test.
