@@ -15,22 +15,22 @@ Verificar datos del distribuidor
 
 Verificar tipo distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Report.Check    ${request_id}    Verificar tipo distribuidor
+    Check    ${request_id}    Verificar tipo distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoDistribuidor]    ${esperado}
 
 Verificar tipo persona de distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Report.Check    ${request_id}    Verificar tipo persona de distribuidor
+    Check    ${request_id}    Verificar tipo persona de distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoPersona]    ${esperado}
 
 Verificar RFC no vacío
     [Arguments]    ${request_id}    ${distribuidor}
-    Report.Check    ${request_id}    Verificar RFC no vacío
+    Check    ${request_id}    Verificar RFC no vacío
     ...    Campo Debe Tener Contenido    ${distribuidor.get('rfc')}
 
 Verificar CURP no vacía
     [Arguments]    ${request_id}    ${distribuidor}
-    Report.Check    ${request_id}    Verificar CURP no vacía
+    Check    ${request_id}    Verificar CURP no vacía
     ...    Campo Debe Tener Contenido    ${distribuidor.get('curp')}
 
 Campo Debe Tener Contenido

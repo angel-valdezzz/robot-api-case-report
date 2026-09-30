@@ -14,7 +14,7 @@ Validar distribuidor ${distribuidor_id}
 *** Keywords ***
 Validar distribuidor desde datos
     [Arguments]    ${case_id}    ${distribuidor_id}    ${tipo_distribuidor}    ${tipo_persona}
-    Report.Set Case Metadata    case_id=${case_id}    distribuidor_id=${distribuidor_id}
+    Set Case Metadata    case_id=${case_id}    distribuidor_id=${distribuidor_id}
     ${token}=    Obtener token de acceso
     ${body}    ${request_id}=    Consultar distribuidor    ${token}    ${distribuidor_id}
     Verificar datos del distribuidor

@@ -1,0 +1,15 @@
+[project]
+name = "robot-api-case-report-example"
+version = "0.1.0"
+description = "Executable Robot Framework API example with independent case reports."
+requires-python = ">=3.12,<4"
+dependencies = [
+    "robotframework==7.5",
+    "robotframework-requests==0.9.7",
+    "robotframework-datadriver==1.11.2",
+    "robotframework-api-case-reporter==0.1.1",
+]
+
+[tool.poetry]
+package-mode = false
+requires-poetry = ">=2.5.1,<3"

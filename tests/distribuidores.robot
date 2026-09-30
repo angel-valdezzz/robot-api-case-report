@@ -9,7 +9,7 @@ DIST-002 Validar datos del distribuidor
     [Documentation]    Consulta un distribuidor y verifica su clasificación e identificación.
     [Tags]    api    distribuidores    DIST-002
     # Metadatos opcionales. El nombre y estado del caso los toma el listener.
-    Report.Set Case Metadata    case_id=DIST-002    environment=QA
+    Set Case Metadata    case_id=DIST-002    environment=QA
     ...    data_row=2    distribuidor_id=1087
 
     ${token}=    Obtener token de acceso
