@@ -1,41 +1,48 @@
 # Robot Framework API Testing
 
-Ejemplo real de **RequestReporter 0.5.0** y **RequestLogger 0.1.0**. Genera un HTML
-independiente por caso con sus requests, responses, headers y validaciones.
-Cada archivo funciona sin conexión y puede adjuntarse individualmente a Jira.
+Flujos de negocio contra **Demo Users API**, con RequestsLibrary, **RequestReporter 0.5.0** y **RequestLogger 0.1.0**. Cada test genera un HTML independiente, sin conexión y adjuntable a Jira.
 
-## Ejecutar la demostración
+[Swagger de la API](https://angel-valdezzz.github.io/demo-users-api/) · [Proyecto de la API](https://github.com/angel-valdezzz/demo-users-api) · [Manual de RequestReporter](https://angel-valdezzz.github.io/robotframework-request-reporter/) · [Keywords](https://angel-valdezzz.github.io/robotframework-request-reporter/keywords/) · [Manual de RequestLogger](https://angel-valdezzz.github.io/robotframework-request-logger/)
 
-Requiere Python 3.12 o superior y Poetry 2.5.1. Las dependencias están fijadas
-en `poetry.lock`; el ejemplo usa Poetry sin empaquetarse como librería.
+## Ejecutar contra la API desplegada
 
-```bash
-python -m pip install poetry==2.5.1
-poetry install
+Python 3.12+ y Poetry 2.5.1. Configura la URL y tu credencial **fuera del código**.
+
+```powershell
+poetry install --only main
+$env:DEMO_BASE_URL = 'https://TU-SERVICIO.onrender.com'
+$env:DEMO_API_KEY = 'TU_CREDENCIAL_PRIVADA'
 poetry run python scripts/run_demo.py
 ```
 
-El script inicia una API ficticia en localhost, ejecuta ambas suites y verifica
-el estado de cada caso, ocho assertions, aislamiento de los reportes y ocultación
-de las credenciales ficticias. Se espera un caso fallido en cada suite: la demostración
-comprueba esos fallos y termina correctamente solo si los resultados son los esperados.
-No hace falta configurar un servidor externo ni credenciales reales.
+En Bash usa `export DEMO_BASE_URL=...` y `export DEMO_API_KEY=...`. El servicio requiere una API key autorizada. No guardes estos valores en archivos versionados. La URL final se asigna al crear el servicio en Render; el despliegue inicial requiere configurar su cuenta.
 
-| Suite | Resultado | HTML |
+En Windows también puedes ejecutar `scripts/run_demo.bat` después de configurar las variables; acepta argumentos como `--logger-mode full` o `--local`.
+
+El Suite Setup consulta `/health`, que despierta Render automáticamente, y espera hasta aproximadamente dos minutos, con consultas cada cinco segundos y timeout de cinco segundos por intento. Si no arranca, los tests muestran el fallo del setup. Los requests de negocio conservan timeout de 15 segundos. El servicio gratuito reinicia sus datos después de suspenderse: los tests crean sus propios usuarios y los limpian en teardown, incluso si una assertion falla.
+
+## Verificar sin credenciales externas
+
+```bash
+poetry install
+poetry run python scripts/run_demo.py --local
+```
+
+`--local` inicia **el proyecto FastAPI independiente** instalado como dependencia de desarrollo y fijado a un commit en Poetry. No contiene una API inventada dentro del runner. Genera una credencial temporal para esa ejecución. CI usa esta opción para que una suspensión o caída de Render no bloquee un pull request.
+
+## Escenarios
+
+| Test | Resultado esperado | Cobertura |
 |---|---|---|
-| Individual | DIST-002: FAIL; DIST-001: PASS; alta: SKIP | `results/cases/` (3 archivos) |
-| DataDriver | DIST-001: PASS; DIST-002: FAIL | `results-ddt/cases/` (2 archivos) |
+| USR-001 | PASS | POST, GET por ID, GET con query params, PUT, PATCH, DELETE y GET 404 |
+| USR-002 | PASS | Correo duplicado y HTTP 409 esperado |
+| USR-003 | FAIL intencional | Rol sales comparado con admin; evidencia del fallo |
+| USR-004 | SKIP | Escenario completo pendiente; no assertions SKIP |
+| USR-DDT Soporte / Ventas | PASS | DataDriver y roles de usuario |
 
-Cada caso incluye dos requests: obtener token y consultar distribuidor.
-Los fallos ficticios del distribuidor 1087 son tipo DIRECTO en lugar de AGENTE y RFC vacío.
+El runner verifica estos resultados; un fallo diferente hace fallar la ejecución. Guarda cuatro HTML en `results/cases/`, dos en `results-ddt/cases/`, logs de Robot y `console.log`. Regenera solamente esos dos directorios conocidos. Un HTTP 409/404 esperado no convierte una assertion en FAIL.
 
-**El script regenera `results/`, `results-ddt/` y `examples/report.html`.**
-El HTML incluido en `examples/report.html` ahora es generado por Robot y la librería;
-ya no es un boceto con datos incrustados manualmente.
-
-## Consola con Rich
-
-El modo por defecto es `summary`, junto a la consola habitual de Robot. Para ver únicamente la salida de RequestLogger:
+## Consola
 
 ```bash
 poetry run python scripts/run_demo.py --logger-mode summary --console none
@@ -43,117 +50,28 @@ poetry run python scripts/run_demo.py --logger-mode failures --console none
 poetry run python scripts/run_demo.py --logger-mode full --console none
 ```
 
-`failures` incluye solo requests con errores de transporte o assertions fallidas. Un HTTP 4xx esperado no implica por sí mismo un fallo. `full` muestra headers, parámetros y bodies completos. Los errores nativos del caso siguen visibles, incluso antes de registrar una request. Cada ejecución guarda `console.log` en los directorios de resultados. La salida se emite al terminar el test; un proceso interrumpido abruptamente puede perder ese búfer.
+Añade `--local` para la API de desarrollo. El modo predeterminado es summary con consola Robot quiet. Los errores nativos siguen visibles. `full` muestra los bodies completos; `failures` muestra los intercambios con assertions fallidas o errores registrados.
 
-El adaptador local `ConsoleAssertions.py` registra una misma respuesta en ambas librerías y conserva una correspondencia entre sus IDs. Ejecuta cada assertion una sola vez mediante `Assert`, comunica PASS/FAIL a `Log Assertion Result` y propaga el fallo original. RequestLogger no ejecuta HTTP ni assertions y no depende de RequestReporter.
+## Arquitectura y evidencia
 
-## Estructura
+- `tests/`: flujos completos y DataDriver.
+- `resources/services/usuarios.resource`: RequestsLibrary, captura de una misma response en reporter/logger y limpieza.
+- `resources/assertions/usuarios.resource`: assertions de negocio.
+- `resources/config/http.resource`: URL, timeout y modo de consola.
+- `resources/assertions/ConsoleAssertions.py`: vincula IDs independientes; cada assertion se ejecuta una sola vez.
+- `data/usuarios.csv`: roles para DataDriver.
+- `scripts/run_demo.py`: ejecución y verificación, sin implementar endpoints HTTP.
+- `examples/report.html`: HTML real de la nueva demo.
 
-| Archivo | Propósito |
-|---|---|
-| `tests/distribuidores.robot` | Tres casos: FAIL con metadatos, PASS sin metadatos y SKIP. Cada caso HTTP tiene dos requests y ocho assertions. |
-| `tests/distribuidores_ddt.robot` | Alternativa con DataDriver y dos casos independientes. |
-| `resources/services/distribuidores.resource` | POST del token y GET de consulta con RequestsLibrary. |
-| `resources/assertions/distribuidores.resource` | Assertions de negocio y continuación nativa de Robot. |
-| `resources/config/http.resource` | URL por defecto y credenciales ficticias. |
-| `data/distribuidores.csv` | Dos filas para DataDriver. |
-| `scripts/run_demo.py` | API local y verificación de los reportes. |
-| `examples/report.html` | Reporte real de DIST-002 para abrir en el navegador. |
+Reporter y Logger ocultan `X-API-Key`. Además, el runner procesa la salida en un directorio temporal y reemplaza la credencial en **todos** los archivos publicados, incluyendo `output.xml`, `log.html` y la consola. Publica solo después de terminar Robot. Usa este runner con credenciales reales: ejecutar `robot` directamente conserva los logs propios de Robot/RequestsLibrary y no aplica esta protección adicional. Una interrupción forzada del proceso no garantiza limpieza del directorio temporal; no publiques esos archivos intermedios.
 
-## Integración
+## GitHub Actions
 
-```robotframework
-*** Settings ***
-Library     RequestReporter
-Resource    ../resources/services/distribuidores.resource
-Resource    ../resources/assertions/distribuidores.resource
+CI ejecuta lint, formato, Robot y verificación local. **Live users API demo** es un workflow manual para el servicio desplegado. Configura en Settings → Secrets and variables → Actions:
 
-*** Test Cases ***
-DIST-002 Validar datos del distribuidor
-    Set Case Metadata    case_id=DIST-002    environment=QA
-    ...    data_row=2    distribuidor_id=1087
-    ${token}=    Obtener token de acceso
-    ${response}    ${request_id}=    Consultar distribuidor    ${token}    1087
-    Verificar código HTTP    ${request_id}    ${response}    200
-    Verificar datos del distribuidor    ${request_id}    ${response}    AGENTE    FISICA
-```
+| Tipo | Nombre | Valor |
+|---|---|---|
+| Variable | `DEMO_BASE_URL` | URL HTTPS del servicio |
+| Secret | `DEMO_API_KEY` | Credencial autorizada para Actions |
 
-Keywords principales:
-
-| Keyword | Función |
-|---|---|
-| `Set Case Metadata` | Agrega metadatos opcionales. |
-| `Capture Response` | Captura el intercambio y devuelve un ID local al caso. |
-| `Assert` | Ejecuta una assertion de Robot, registra su resultado y propaga el fallo. |
-
-El listener se registra al importar la librería. Escribe el HTML al terminar el caso;
-no requiere Begin Case, End Case, Generate Report ni `--listener` adicional.
-
-El tag `robot:continue-on-failure` se aplica solo al grupo de assertions independientes.
-Permite completar las comprobaciones independientes y mantiene el caso en FAIL.
-Token, HTTP esperado y parsing se verifican antes, sin esa continuación.
-
-Las claves obligatorias usan `${distribuidor}[tipoDistribuidor]`; RFC y CURP usan
-`.get()` para registrar también valores ausentes. La keyword propia
-`Campo Debe Tener Contenido` rechaza None, cadena vacía y espacios.
-
-## Usar un ambiente propio
-
-```bash
-poetry run robot --variable BASE_URL:https://tu-api.example --variable CLIENT_ID:tu-cliente --variable CLIENT_SECRET:tu-secreto --outputdir results tests/distribuidores.robot
-```
-
-Ajusta rutas, payloads y datos al contrato de tu servicio. Ejecuta la suite individual
-**o** la alternativa DataDriver para no repetir DIST-002. Evita credenciales reales
-en comandos compartidos; las variables de este repositorio son únicamente ficticias.
-
-La ocultación de secretos aplica a los HTML del reporter y la consola de RequestLogger. Robot y RequestsLibrary
-mantienen sus propios logs. Headers ofrece Table/JSON y un icono de copia. La vista JSON tiene formato y
-la copia contiene JSON indentado con los valores sensibles ocultos.
-
-## Documentación y distribución
-
-[Manual de usuario](https://angel-valdezzz.github.io/robotframework-request-reporter/) ·
-[Referencia de keywords](https://angel-valdezzz.github.io/robotframework-request-reporter/keywords/) ·
-[Ejemplo en vivo](https://angel-valdezzz.github.io/robotframework-request-reporter/examples/report.html) ·
-[Paquete en PyPI](https://pypi.org/project/robotframework-request-reporter/) ·
-[Manual de RequestLogger](https://angel-valdezzz.github.io/robotframework-request-logger/) ·
-[Consola y ejemplos de modos](https://angel-valdezzz.github.io/robotframework-request-logger/console/)
-
-La Action de este repositorio instala la versión publicada y ejecuta la misma
-demostración. Sus artefactos contienen los cinco HTML por caso y las transcripciones console.log protegidas.
-
-## Sintaxis nativa de Robot Framework 7.5
-
-Los diccionarios locales se crean con `VAR    &{headers}    Accept=application/json`.
-Al pasarlos como objeto se usa `${headers}`, por ejemplo `headers=${headers}`.
-Las asignaciones simples usan `VAR`; los retornos de keywords mantienen `${valor}=`.
-Se conserva `RETURN`, acceso directo por clave y el tag nativo de continuación.
-`config/http.resource` mantiene variables simples que pueden sobrescribirse desde CLI.
-
-## Windows
-
-Con Python y Poetry instalados, ejecuta `scripts\run_demo.bat`. Instala las dependencias y ejecuta el mismo demo; propaga errores de instalación o verificación.
-
-## Arquitectura y dependencia del reporter
-
-`resources/services/` ejecuta HTTP y captura la respuesta una sola vez. La consulta devuelve response + request_id; `resources/assertions/` encapsula comprobaciones legibles y las registra con Assert. Estos resources dependen explícitamente del reporter como ejemplo de integración. La librería no exige esta estructura. Configuración HTTP en `resources/config/`; pruebas en `tests/`, datos en `data/` y utilidades en `scripts/`.
-
-## Calidad
-
-```bash
-poetry run ruff check .
-poetry run ruff format .
-poetry run robocop check
-poetry run robocop format
-```
-
-La rama principal es `main`; los cambios entran mediante pull requests y CI. La configuración de VS Code aplica formato al guardar con Ruff y RoboCop a través de RobotCode.
-
-`Capture Response` registra una respuesta que ya existe: no ejecuta HTTP. El ID devuelto solo vincula esa evidencia con sus assertions. Los services y assertions de este ejemplo importan `RequestReporter`: sustituir el reporter requiere cambiar esas llamadas, pero no las rutas HTTP ni los datos de negocio. La librería acepta cualquier `requests.Response` y no exige estas carpetas. Los metadatos son claves opcionales definidas por cada proyecto; `case_id` es un identificador externo, mientras que el título siempre viene del nombre del test de Robot.
-
-## Explorar el reporte
-
-El demo genera cinco HTML: caso fallido con metadatos, caso aprobado sin metadatos, SKIP y dos casos DataDriver. Cada caso HTTP registra dos requests y ocho assertions; los dos fallos del distribuidor 1087 son intencionales. El folio se valida con una keyword de negocio y se consulta en el response body.
-
-Summary permite abrir una request desde la tabla. En los bodies puedes buscar `folio`, plegar objetos, cambiar entre Formatted/Raw y copiar el contenido completo. Assertions permite filtrar All/Failed/Passed. No se agregan Results, logs ni PDF.
+El workflow usa el runner y sube únicamente resultados procesados. No se envían credenciales de Render a los tests. La integración externa queda lista para ejecutarse cuando el servicio esté desplegado y estos valores estén configurados.
