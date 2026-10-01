@@ -1,6 +1,6 @@
 # Robot Framework API Testing
 
-Ejemplo real de **RequestReporter 0.4.0**, instalado desde PyPI. Genera un HTML
+Ejemplo real de **RequestReporter 0.5.0** y **RequestLogger 0.1.0**. Genera un HTML
 independiente por caso con sus requests, responses, headers y validaciones.
 Cada archivo funciona sin conexión y puede adjuntarse individualmente a Jira.
 
@@ -23,7 +23,7 @@ No hace falta configurar un servidor externo ni credenciales reales.
 
 | Suite | Resultado | HTML |
 |---|---|---|
-| Individual | DIST-002: FAIL, 5 validaciones PASS y 2 FAIL | `results/cases/` (1 archivo) |
+| Individual | DIST-002: FAIL; DIST-001: PASS; alta: SKIP | `results/cases/` (3 archivos) |
 | DataDriver | DIST-001: PASS; DIST-002: FAIL | `results-ddt/cases/` (2 archivos) |
 
 Cada caso incluye dos requests: obtener token y consultar distribuidor.
@@ -32,6 +32,20 @@ Los fallos ficticios del distribuidor 1087 son tipo DIRECTO en lugar de AGENTE y
 **El script regenera `results/`, `results-ddt/` y `examples/report.html`.**
 El HTML incluido en `examples/report.html` ahora es generado por Robot y la librería;
 ya no es un boceto con datos incrustados manualmente.
+
+## Consola con Rich
+
+El modo por defecto es `summary`, junto a la consola habitual de Robot. Para ver únicamente la salida de RequestLogger:
+
+```bash
+poetry run python scripts/run_demo.py --logger-mode summary --console none
+poetry run python scripts/run_demo.py --logger-mode failures --console none
+poetry run python scripts/run_demo.py --logger-mode full --console none
+```
+
+`failures` incluye solo requests con errores de transporte o assertions fallidas. Un HTTP 4xx esperado no implica por sí mismo un fallo. `full` muestra headers, parámetros y bodies completos. Los errores nativos del caso siguen visibles, incluso antes de registrar una request. Cada ejecución guarda `console.log` en los directorios de resultados. La salida se emite al terminar el test; un proceso interrumpido abruptamente puede perder ese búfer.
+
+El adaptador local `ConsoleAssertions.py` registra una misma respuesta en ambas librerías y conserva una correspondencia entre sus IDs. Ejecuta cada assertion una sola vez mediante `Assert`, comunica PASS/FAIL a `Log Assertion Result` y propaga el fallo original. RequestLogger no ejecuta HTTP ni assertions y no depende de RequestReporter.
 
 ## Estructura
 
@@ -93,7 +107,7 @@ Ajusta rutas, payloads y datos al contrato de tu servicio. Ejecuta la suite indi
 **o** la alternativa DataDriver para no repetir DIST-002. Evita credenciales reales
 en comandos compartidos; las variables de este repositorio son únicamente ficticias.
 
-La ocultación de secretos aplica a los HTML del reporter. Robot y RequestsLibrary
+La ocultación de secretos aplica a los HTML del reporter y la consola de RequestLogger. Robot y RequestsLibrary
 mantienen sus propios logs. Headers ofrece Table/JSON y un icono de copia. La vista JSON tiene formato y
 la copia contiene JSON indentado con los valores sensibles ocultos.
 
@@ -102,10 +116,12 @@ la copia contiene JSON indentado con los valores sensibles ocultos.
 [Manual de usuario](https://angel-valdezzz.github.io/robotframework-request-reporter/) ·
 [Referencia de keywords](https://angel-valdezzz.github.io/robotframework-request-reporter/keywords/) ·
 [Ejemplo en vivo](https://angel-valdezzz.github.io/robotframework-request-reporter/examples/report.html) ·
-[Paquete en PyPI](https://pypi.org/project/robotframework-request-reporter/)
+[Paquete en PyPI](https://pypi.org/project/robotframework-request-reporter/) ·
+[Manual de RequestLogger](https://angel-valdezzz.github.io/robotframework-request-logger/) ·
+[Consola y ejemplos de modos](https://angel-valdezzz.github.io/robotframework-request-logger/console/)
 
 La Action de este repositorio instala la versión publicada y ejecuta la misma
-demostración. Sus artefactos contienen únicamente los cinco HTML por caso.
+demostración. Sus artefactos contienen los cinco HTML por caso y las transcripciones console.log protegidas.
 
 ## Sintaxis nativa de Robot Framework 7.5
 

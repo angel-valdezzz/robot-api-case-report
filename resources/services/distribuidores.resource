@@ -2,6 +2,8 @@
 Library     RequestsLibrary
 Resource    ../config/http.resource
 Library     RequestReporter
+Library     RequestLogger    mode=${LOGGER_MODE}
+Library     ../assertions/ConsoleAssertions.py
 
 
 *** Keywords ***
@@ -17,13 +19,13 @@ Obtener token de acceso
     ${response}=    POST    ${BASE_URL}/oauth/token
     ...    data=${form}    headers=${headers}
     ...    expected_status=anything    timeout=${HTTP_TIMEOUT}
-    ${request_id}=    Capture Response    Obtener token    ${response}
+    ${request_id}=    Capture And Log Response    Obtener token    ${response}
 
-    Assert    ${request_id}    Verificar código HTTP
+    Assert And Log    ${request_id}    Verificar código HTTP
     ...    Should Be Equal As Integers    ${response.status_code}    200
     VAR    ${body}    ${response.json()}
     VAR    ${token}    ${body.get('access_token', '')}
-    Assert    ${request_id}    Verificar token presente
+    Assert And Log    ${request_id}    Verificar token presente
     ...    Should Not Be Empty    ${token}
     RETURN    ${token}
 
@@ -34,6 +36,6 @@ Consultar distribuidor
     ...    Accept=application/json
     ${response}=    GET    ${BASE_URL}/v1/distribuidores/${distribuidor_id}
     ...    headers=${headers}    expected_status=anything    timeout=${HTTP_TIMEOUT}
-    ${request_id}=    Capture Response    Consultar distribuidor ${distribuidor_id}    ${response}
+    ${request_id}=    Capture And Log Response    Consultar distribuidor ${distribuidor_id}    ${response}
 
     RETURN    ${response}    ${request_id}
