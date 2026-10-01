@@ -1,5 +1,6 @@
 """Run both examples against a local fixture and verify actual per-case HTML."""
 
+import argparse
 import json
 import re
 import shutil
@@ -63,7 +64,7 @@ class API(BaseHTTPRequestHandler):
             self.respond(404, {"error": "not found"})
 
 
-def run_suite(server, suite, directory, expected_count):
+def run_suite(server, suite, directory, expected_count, mode, console):
     output = ROOT / directory
     # Clear only these known demo output directories, never caller-selected paths.
     if output.exists():
@@ -77,11 +78,23 @@ def run_suite(server, suite, directory, expected_count):
             str(output),
             "--variable",
             f"BASE_URL:http://127.0.0.1:{server.server_port}",
+            "--variable",
+            f"LOGGER_MODE:{mode}",
+            "--console",
+            console,
             str(ROOT / "tests" / suite),
         ],
         cwd=ROOT,
         check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
     )
+    transcript = process.stdout + process.stderr
+    (output / "console.log").write_text(transcript, encoding="utf-8")
+    print(transcript, end="")
+    assert TOKEN not in transcript and SECRET not in transcript
+    assert "HTTP 200" in transcript and "Verificar folio generado" in transcript
     tests = list(ExecutionResult(str(output / "output.xml")).suite.tests)
     assert len(tests) == expected_count
     assert process.returncode == 1, "Exactly one intentionally failing case is expected"
@@ -123,12 +136,25 @@ def run_suite(server, suite, directory, expected_count):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--logger-mode", choices=["summary", "failures", "full"], default="summary")
+    parser.add_argument("--console", choices=["verbose", "quiet", "none"], default="verbose")
+    options = parser.parse_args()
     server = ThreadingHTTPServer(("127.0.0.1", 0), API)
     worker = Thread(target=server.serve_forever, daemon=True)
     worker.start()
     try:
-        failing = run_suite(server, "distribuidores.robot", "results", 3)
-        run_suite(server, "distribuidores_ddt.robot", "results-ddt", 2)
+        failing = run_suite(
+            server, "distribuidores.robot", "results", 3, options.logger_mode, options.console
+        )
+        run_suite(
+            server,
+            "distribuidores_ddt.robot",
+            "results-ddt",
+            2,
+            options.logger_mode,
+            options.console,
+        )
         shutil.copyfile(failing, ROOT / "examples/report.html")
     finally:
         server.shutdown()

@@ -29,3 +29,5 @@ jobs:
           path: |
             results/cases/*.html
             results-ddt/cases/*.html
+            results/console.log
+            results-ddt/console.log

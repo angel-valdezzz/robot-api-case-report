@@ -1,6 +1,7 @@
 *** Settings ***
 Library    String
 Library    RequestReporter
+Library    ConsoleAssertions.py
 
 
 *** Keywords ***
@@ -22,22 +23,22 @@ Verificar campos del distribuidor
 
 Verificar tipo distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Assert    ${request_id}    Verificar tipo distribuidor
+    Assert And Log    ${request_id}    Verificar tipo distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoDistribuidor]    ${esperado}
 
 Verificar tipo persona de distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Assert    ${request_id}    Verificar tipo persona de distribuidor
+    Assert And Log    ${request_id}    Verificar tipo persona de distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoPersona]    ${esperado}
 
 Verificar RFC no vacío
     [Arguments]    ${request_id}    ${distribuidor}
-    Assert    ${request_id}    Verificar RFC no vacío
+    Assert And Log    ${request_id}    Verificar RFC no vacío
     ...    Campo Debe Tener Contenido    ${distribuidor.get('rfc')}
 
 Verificar CURP no vacía
     [Arguments]    ${request_id}    ${distribuidor}
-    Assert    ${request_id}    Verificar CURP no vacía
+    Assert And Log    ${request_id}    Verificar CURP no vacía
     ...    Campo Debe Tener Contenido    ${distribuidor.get('curp')}
 
 Campo Debe Tener Contenido
@@ -50,11 +51,11 @@ Campo Debe Tener Contenido
 
 Verificar código HTTP
     [Arguments]    ${request_id}    ${response}    ${esperado}
-    Assert    ${request_id}    Verificar código HTTP
+    Assert And Log    ${request_id}    Verificar código HTTP
     ...    Should Be Equal As Integers    ${response.status_code}    ${esperado}
 
 Verificar folio generado
     [Documentation]    Valida el folio del response body; no crea datos de resultado adicionales.
     [Arguments]    ${request_id}    ${distribuidor}
-    Assert    ${request_id}    Verificar folio generado
+    Assert And Log    ${request_id}    Verificar folio generado
     ...    Should Not Be Empty    ${distribuidor}[registration][folio]
