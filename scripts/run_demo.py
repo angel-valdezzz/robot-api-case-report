@@ -103,6 +103,8 @@ def run_suite(server, suite, directory, expected_count):
         is_fail = str(case["metadata"]["distribuidor_id"]) == "1087"
         assert test.status == case["status"] == ("FAIL" if is_fail else "PASS")
         assert len(case["exchanges"]) == 2
+        assert case["execution_errors"] == [], "Assertion failures must not duplicate execution errors"
+        assert "Total assertions" in html and "section-failures" in html
         checks = [v for e in case["exchanges"] for v in e["validations"]]
         assert len(checks) == 7
         assert sum(v["status"] == "FAIL" for v in checks) == (2 if is_fail else 0)

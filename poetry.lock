@@ -389,14 +389,14 @@ files = [
 
 [[package]]
 name = "robotframework-api-case-reporter"
-version = "0.1.1"
+version = "0.2.0"
 description = "Standalone HTML API evidence reports for each Robot Framework test case."
 optional = false
 python-versions = "<4,>=3.12"
 groups = ["main"]
 files = [
-    {file = "robotframework_api_case_reporter-0.1.1-py3-none-any.whl", hash = "sha256:a7215f9010ccbd3a1da450897b3a614de4ec73fe2aeb25ac29a4a3ec56c1dd44"},
-    {file = "robotframework_api_case_reporter-0.1.1.tar.gz", hash = "sha256:12871770041de8db434bc141aa5d0bbd592d0732da0614ff382c1db23ffb1947"},
+    {file = "robotframework_api_case_reporter-0.2.0-py3-none-any.whl", hash = "sha256:24135ea6483e9a6630bd484c19158e715e07a235a7f604fbd5d79285da3a9b97"},
+    {file = "robotframework_api_case_reporter-0.2.0.tar.gz", hash = "sha256:7ae105e3acd56f493d39bd6200e85b4d63c5c20fd057263861d7221892731801"},
 ]
 
 [package.dependencies]
@@ -464,4 +464,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "34e169a61a918d1b18b4d0c0dc0284b1f6ee0ca5041d1c292fabc512f1c11297"
+content-hash = "8c33a9b10e94b08a7e9d78804f8664ebf0c81427a5f4b6d894be75c528a63e83"

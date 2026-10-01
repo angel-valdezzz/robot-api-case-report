@@ -1,6 +1,6 @@
 # Robot API Case Report — ejemplo ejecutable
 
-Ejemplo real de **APICaseReporter 0.1.1**, instalado desde PyPI. Genera un HTML
+Ejemplo real de **APICaseReporter 0.2.0**, instalado desde PyPI. Genera un HTML
 independiente por caso con sus requests, responses, headers y validaciones.
 Cada archivo funciona sin conexión y puede adjuntarse individualmente a Jira.
 
@@ -16,7 +16,7 @@ poetry run python scripts/run_demo.py
 ```
 
 El script inicia una API ficticia en localhost, ejecuta ambas suites y verifica
-el estado de cada caso, siete validaciones, aislamiento de los reportes y ocultación
+el estado de cada caso, siete assertions, aislamiento de los reportes y ocultación
 de las credenciales ficticias. Se espera un caso fallido en cada suite: la demostración
 comprueba esos fallos y termina correctamente solo si los resultados son los esperados.
 No hace falta configurar un servidor externo ni credenciales reales.
@@ -37,11 +37,11 @@ ya no es un boceto con datos incrustados manualmente.
 
 | Archivo | Propósito |
 |---|---|
-| `tests/distribuidores.robot` | Caso individual con dos requests y siete validaciones. |
+| `tests/distribuidores.robot` | Caso individual con dos requests y siete assertions. |
 | `tests/distribuidores_ddt.robot` | Alternativa con DataDriver y dos casos independientes. |
 | `resources/distribuidores.resource` | POST del token y GET de consulta con RequestsLibrary. |
 | `resources/validaciones.resource` | Assertions de negocio y continuación nativa de Robot. |
-| `resources/reporter.resource` | Importación real de APICaseReporter con alias  |
+| `resources/reporter.resource` | Importación real de APICaseReporter  |
 | `resources/config.resource` | URL por defecto y credenciales ficticias. |
 | `data/distribuidores.csv` | Dos filas para DataDriver. |
 | `scripts/run_demo.py` | API local y verificación de los reportes. |
