@@ -1,0 +1,11 @@
+{
+  "files.autoSave": "onFocusChange",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  "[robotframework]": {
+    "editor.defaultFormatter": "robotcodedev.robotcode",
+    "editor.formatOnSave": true
+  }
+}

@@ -1,11 +1,17 @@
 *** Settings ***
-Library     String
-Resource    reporter.resource
+Library    String
+Library    RequestReporter
 
 
 *** Keywords ***
 Verificar datos del distribuidor
     [Documentation]    Completa las cuatro validaciones y conserva FAIL si alguna falla.
+    [Arguments]    ${request_id}    ${response}    ${tipo_distribuidor}    ${tipo_persona}
+    VAR    ${distribuidor}    ${response.json()}
+    Verificar campos del distribuidor    ${request_id}    ${distribuidor}    ${tipo_distribuidor}    ${tipo_persona}
+
+Verificar campos del distribuidor
+    [Documentation]    Assertions independientes: ejecuta todas y conserva los fallos.
     [Tags]    robot:continue-on-failure
     [Arguments]    ${request_id}    ${distribuidor}    ${tipo_distribuidor}    ${tipo_persona}
     Verificar tipo distribuidor    ${request_id}    ${distribuidor}    ${tipo_distribuidor}
@@ -15,22 +21,22 @@ Verificar datos del distribuidor
 
 Verificar tipo distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Check    ${request_id}    Verificar tipo distribuidor
+    Assert    ${request_id}    Verificar tipo distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoDistribuidor]    ${esperado}
 
 Verificar tipo persona de distribuidor
     [Arguments]    ${request_id}    ${distribuidor}    ${esperado}
-    Check    ${request_id}    Verificar tipo persona de distribuidor
+    Assert    ${request_id}    Verificar tipo persona de distribuidor
     ...    Should Be Equal As Strings    ${distribuidor}[tipoPersona]    ${esperado}
 
 Verificar RFC no vacío
     [Arguments]    ${request_id}    ${distribuidor}
-    Check    ${request_id}    Verificar RFC no vacío
+    Assert    ${request_id}    Verificar RFC no vacío
     ...    Campo Debe Tener Contenido    ${distribuidor.get('rfc')}
 
 Verificar CURP no vacía
     [Arguments]    ${request_id}    ${distribuidor}
-    Check    ${request_id}    Verificar CURP no vacía
+    Assert    ${request_id}    Verificar CURP no vacía
     ...    Campo Debe Tener Contenido    ${distribuidor.get('curp')}
 
 Campo Debe Tener Contenido
@@ -40,3 +46,8 @@ Campo Debe Tener Contenido
     ${texto}=    Convert To String    ${valor}
     ${texto}=    Strip String    ${texto}
     Should Not Be Empty    ${texto}    msg=El campo no tiene contenido.
+
+Verificar código HTTP
+    [Arguments]    ${request_id}    ${response}    ${esperado}
+    Assert    ${request_id}    Verificar código HTTP
+    ...    Should Be Equal As Integers    ${response.status_code}    ${esperado}
