@@ -6,3 +6,6 @@ results-ddt/
 /output.xml
 /log.html
 /report.html
+
+.robocop_cache/
+.ruff_cache/

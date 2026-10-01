@@ -30,9 +30,7 @@ class API(BaseHTTPRequestHandler):
         self.wfile.write(payload)
 
     def do_POST(self):
-        form = parse_qs(
-            self.rfile.read(int(self.headers.get("Content-Length", 0))).decode()
-        )
+        form = parse_qs(self.rfile.read(int(self.headers.get("Content-Length", 0))).decode())
         if self.path != "/oauth/token":
             self.respond(404, {"error": "not found"})
         elif form.get("client_secret") != [SECRET]:
@@ -44,9 +42,7 @@ class API(BaseHTTPRequestHandler):
         if self.headers.get("Authorization") != f"Bearer {TOKEN}":
             self.respond(401, {"error": "unauthorized"})
         elif self.path == "/v1/distribuidores/1087":
-            body = json.loads(
-                (ROOT / "examples/response-distribuidor-1087.json").read_text()
-            )
+            body = json.loads((ROOT / "examples/response-distribuidor-1087.json").read_text())
             self.respond(200, body)
         elif self.path == "/v1/distribuidores/1042":
             self.respond(
@@ -103,7 +99,9 @@ def run_suite(server, suite, directory, expected_count):
         is_fail = str(case["metadata"]["distribuidor_id"]) == "1087"
         assert test.status == case["status"] == ("FAIL" if is_fail else "PASS")
         assert len(case["exchanges"]) == 2
-        assert case["execution_errors"] == [], "Assertion failures must not duplicate execution errors"
+        assert case["execution_errors"] == [], (
+            "Assertion failures must not duplicate execution errors"
+        )
         assert "Total assertions" in html and "section-failures" in html
         checks = [v for e in case["exchanges"] for v in e["validations"]]
         assert len(checks) == 7
