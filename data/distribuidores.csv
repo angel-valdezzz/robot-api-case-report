@@ -1,3 +1,0 @@
-*** Test Cases ***;${case_id};${distribuidor_id};${tipo_distribuidor};${tipo_persona}
-DIST-001 Validar distribuidor 1042;DIST-001;1042;AGENTE;FISICA
-DIST-002 Validar distribuidor 1087;DIST-002;1087;AGENTE;FISICA
