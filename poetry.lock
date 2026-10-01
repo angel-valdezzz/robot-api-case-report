@@ -598,23 +598,6 @@ files = [
 ]
 
 [[package]]
-name = "robotframework-api-case-reporter"
-version = "0.2.0"
-description = "Standalone HTML API evidence reports for each Robot Framework test case."
-optional = false
-python-versions = "<4,>=3.12"
-groups = ["main"]
-files = [
-    {file = "robotframework_api_case_reporter-0.2.0-py3-none-any.whl", hash = "sha256:24135ea6483e9a6630bd484c19158e715e07a235a7f604fbd5d79285da3a9b97"},
-    {file = "robotframework_api_case_reporter-0.2.0.tar.gz", hash = "sha256:7ae105e3acd56f493d39bd6200e85b4d63c5c20fd057263861d7221892731801"},
-]
-
-[package.dependencies]
-jinja2 = ">=3.1.6,<4"
-requests = ">=2.32,<3"
-robotframework = ">=7.5,<8"
-
-[[package]]
 name = "robotframework-datadriver"
 version = "1.11.2"
 description = "A library for Data-Driven Testing."
@@ -633,6 +616,23 @@ robotframework = ">=4.0.2,<8.0"
 
 [package.extras]
 xls = ["openpyxl", "pandas", "xlrd (>=1.2.0)"]
+
+[[package]]
+name = "robotframework-request-reporter"
+version = "0.3.1"
+description = "Standalone HTML API evidence reports for each Robot Framework test case."
+optional = false
+python-versions = "<4,>=3.12"
+groups = ["main"]
+files = [
+    {file = "robotframework_request_reporter-0.3.1-py3-none-any.whl", hash = "sha256:6fdd44371727e75ef7efe28332f229ac04344c7bdcdbd051bcc60cd23e72c705"},
+    {file = "robotframework_request_reporter-0.3.1.tar.gz", hash = "sha256:9448d35858286309115da47eb260ec4b1b1b1228401cce167668c67f09d89e1e"},
+]
+
+[package.dependencies]
+jinja2 = ">=3.1.6,<4"
+requests = ">=2.32,<3"
+robotframework = ">=7.5,<8"
 
 [[package]]
 name = "robotframework-requests"
@@ -796,4 +796,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "72beb8f7f0888028ff7629f49eafb8b64d7a2ce91dea48b96f56aaa3521dfcd8"
+content-hash = "f156dcc21442cb7b1420000cace106e6d7401019265c2b28b71bd464760ea050"

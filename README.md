@@ -1,6 +1,6 @@
 # Robot Framework API Testing
 
-Ejemplo real de **RequestReporter 0.3.0**, instalado desde PyPI. Genera un HTML
+Ejemplo real de **RequestReporter 0.3.1**, instalado desde PyPI. Genera un HTML
 independiente por caso con sus requests, responses, headers y validaciones.
 Cada archivo funciona sin conexión y puede adjuntarse individualmente a Jira.
 
