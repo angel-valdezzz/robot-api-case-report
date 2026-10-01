@@ -8,6 +8,8 @@
  :root{color-scheme:light;--bg:#f5f7fb;--panel:#fff;--text:#1c293c;--muted:#52627a;--line:#dce3ef;--accent:#344bc0;--soft:#edf0ff;--pass:#146c38;--pass-bg:#e7f5eb;--fail:#b42332;--fail-bg:#ffeaec;--skip:#805b00;--skip-bg:#fff2c2}
 :root[data-theme=dark]{color-scheme:dark;--bg:#121923;--panel:#1d2736;--text:#eff3fa;--muted:#a8b8cd;--line:#354359;--accent:#a6b6ff;--soft:#2a3653;--pass:#97e4af;--pass-bg:#193d2b;--fail:#ff9eaa;--fail-bg:#4a2530;--skip:#f3d16e;--skip-bg:#423819}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:0 0 12px}h3{font-size:14px;margin:0}button{font:inherit;min-height:42px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--panel);color:var(--text);cursor:pointer}button:hover{background:var(--soft)}button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button[aria-selected=true],button[aria-pressed=true]{background:var(--soft);border-color:var(--accent);color:var(--accent)}.small{color:var(--muted);font-size:12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.badge{background:var(--panel);padding:3px 8px;border-radius:5px;font-size:12px;font-weight:650}.pass{color:var(--pass)}.fail{color:var(--fail)}.skip{color:var(--skip)}.badge.pass{background:var(--pass-bg)}.badge.fail{background:var(--fail-bg)}.badge.skip{background:var(--skip-bg)}.stat.pass-stat{border-top:3px solid var(--pass)}.stat.fail-stat{border-top:3px solid var(--fail)}.case-message.skip{border-color:var(--skip);background:var(--skip-bg)}.requests small.pass{color:var(--pass)}.requests small.fail{color:var(--fail)}.requests button:has(.fail){border-left:3px solid var(--fail)}.requests button:has(.pass){border-left:3px solid var(--pass)}.theme-control{margin-left:auto}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.stat{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px}.stat strong{display:block;font-size:24px}.meta{display:flex;gap:8px 20px;flex-wrap:wrap;margin:12px 0;overflow-wrap:anywhere}.error{background:var(--panel);border-left:3px solid var(--fail);padding:12px;margin:14px 0;white-space:pre-wrap;overflow-wrap:anywhere}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px}.requests{display:flex;flex-direction:column;gap:8px}.requests button{text-align:left}.requests small{display:block;color:var(--muted)}.detail{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}.url{background:var(--bg);padding:12px;border-radius:7px;overflow-wrap:anywhere}.url code{font-size:12px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.code{background:var(--bg);padding:14px;border-radius:7px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.65 ui-monospace,monospace;margin:0}.key{color:var(--accent)}.string{color:var(--pass)}table{border-collapse:collapse;table-layout:fixed;width:100%;font-size:13px}th,td{padding:10px 5px;border-bottom:1px solid var(--line);text-align:left;overflow-wrap:anywhere;vertical-align:top}th{color:var(--muted);font-weight:500}.validation{padding:12px 0;border-bottom:1px solid var(--line)}.validation p{margin:5px 0 0 20px;white-space:pre-wrap;overflow-wrap:anywhere}textarea{width:100%;min-height:100px;font:inherit;background:var(--bg);color:var(--text)}footer{margin-top:20px}.empty{padding:16px;color:var(--muted)}@media(max-width:700px){main{padding:14px}.layout{grid-template-columns:1fr}.requests{flex-direction:row;flex-wrap:wrap}.requests button{flex:1;min-width:145px}.stats{grid-template-columns:repeat(2,1fr)}.detail{padding:14px}h1{font-size:20px}}
+
+[hidden]{display:none!important}.sections{display:flex;gap:8px;margin:20px 0}.sections button{font-weight:650}.summary-panel,.failure-panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}.summary-panel p{margin:8px 0}.section-title{margin-top:20px}.method{font-weight:750;letter-spacing:.03em}.method-get{color:var(--pass);background:var(--pass-bg)}.method-post{color:var(--skip);background:var(--skip-bg)}.method-put,.method-head,.http-info{color:var(--accent);background:var(--soft)}.method-patch,.method-options{color:var(--skip);background:var(--skip-bg)}.method-delete{color:var(--fail);background:var(--fail-bg)}.http-success{color:var(--pass);background:var(--pass-bg)}.http-redirect{color:var(--skip);background:var(--skip-bg)}.http-error{color:var(--fail);background:var(--fail-bg)}.failure-table{overflow:auto}.failure-table table{min-width:540px}.failure-table button{border:0;padding:0;min-height:32px;background:none;color:var(--accent);text-align:left;text-decoration:underline}.technical{margin-top:18px}.technical summary{cursor:pointer;color:var(--muted)}.notice{padding:12px 16px;background:var(--fail-bg);border-left:3px solid var(--fail);border-radius:6px;margin-top:16px}.validation:focus{outline:2px solid var(--accent);outline-offset:5px}.summary-actions{margin-top:16px}.requests button .badge{display:inline-block}.stats{margin-top:0}
 </style>
 <script>
 (()=>{let theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';try{const stored=localStorage.getItem('api-case-reporter-theme');if(stored==='light'||stored==='dark')theme=stored;}catch(error){}document.documentElement.dataset.theme=theme;})();
@@ -15,31 +17,141 @@
 </head>
 <body>
 <main>
-<header><div class="row"><h1>DIST-002 Validar datos del distribuidor</h1><span class="badge fail">FAIL</span><button type="button" id="theme-toggle" class="theme-control" aria-label="Switch color theme">Light / Dark</button></div><div class="small">2026-09-30T22:29:24.760826+00:00 · Robot Framework API case report</div></header>
-<section class="stats" aria-label="Case summary">
+<header><div class="row"><h1>DIST-002 Validar datos del distribuidor</h1><span class="badge fail">FAIL</span><button type="button" id="theme-toggle" class="theme-control" aria-label="Switch color theme">Light / Dark</button></div><div class="small"><time id="started" datetime="2026-10-01T00:38:08.044438+00:00">2026-10-01T00:38:08.044438+00:00</time> · Robot Framework API case report</div></header>
+<nav class="sections" aria-label="Report sections"><button data-section="summary" aria-pressed="true">Summary</button><button data-section="requests" aria-pressed="false">Requests</button><button data-section="failures" aria-pressed="false">Failures <span id="failure-count"></span></button></nav>
+<section id="section-summary" aria-label="Summary">
+<div class="stats">
 <div class="stat"><span class="small">HTTP requests</span><strong id="request-count"></strong></div>
-<div class="stat pass-stat"><span class="small">Passed validations</span><strong class="pass" id="passed"></strong></div>
-<div class="stat fail-stat"><span class="small">Failed validations</span><strong class="fail" id="failed"></strong></div>
-<div class="stat"><span class="small">Case duration</span><strong>0.02 s</strong></div>
+<div class="stat"><span class="small">Total assertions</span><strong id="assertion-count"></strong></div>
+<div class="stat pass-stat"><span class="small">Passed assertions</span><strong class="pass" id="passed"></strong></div>
+<div class="stat fail-stat"><span class="small">Failed assertions</span><strong class="fail" id="failed"></strong></div>
+</div>
+<div class="summary-panel"><h2>Case information</h2><p><span class="small">Case duration</span> · <strong>0.02 s</strong></p><p class="small">Each request includes its HTTP response time. HTTP status and assertion results are independent.</p>
+<div class="meta" aria-label="Case metadata"><span><span class="small">case_id:</span> DIST-002</span><span><span class="small">environment:</span> QA</span><span><span class="small">data_row:</span> 2</span><span><span class="small">distribuidor_id:</span> 1087</span></div>
+
+<div id="failure-notice"></div><div class="row summary-actions"><button data-section="requests">View requests</button></div></div>
 </section>
-<section class="meta" aria-label="Case metadata"><span><span class="small">case_id:</span> DIST-002</span><span><span class="small">environment:</span> QA</span><span><span class="small">data_row:</span> 2</span><span><span class="small">distribuidor_id:</span> 1087</span></section>
-<div class="error case-message fail" role="note">Several failures occurred:
+<section id="section-requests" aria-label="Requests" hidden><div class="layout"><nav class="requests" id="requests" aria-label="Case requests"></nav><section class="detail" aria-label="Selected request"><div id="url" class="url"></div><div class="tabs" role="tablist" aria-label="Request details">
+<button type="button" role="tab" id="tab-response" data-tab="response" tabindex="0" aria-selected="true" aria-controls="content">Response</button><button type="button" role="tab" id="tab-request" data-tab="request" tabindex="-1" aria-selected="false" aria-controls="content">Request</button><button type="button" role="tab" id="tab-headers" data-tab="headers" tabindex="-1" aria-selected="false" aria-controls="content">Headers</button><button type="button" role="tab" id="tab-assertions" data-tab="assertions" tabindex="-1" aria-selected="false" aria-controls="content">Assertions</button>
+</div><div id="content" role="tabpanel" aria-labelledby="tab-response" tabindex="0"></div></section></div></section>
+<section id="section-failures" class="failure-panel" aria-label="Failures" hidden><h2>Failed assertions</h2><div id="failure-table" class="failure-table"></div><h2 class="section-title">Execution errors</h2><div id="execution-errors"></div><details class="technical"><summary>Original Robot Framework message</summary><pre class="code">Several failures occurred:
 
 1) DIRECTO != AGENTE
 
-2) El campo no tiene contenido.</div>
-<div class="layout"><nav class="requests" id="requests" aria-label="Case requests"></nav><section class="detail" aria-live="polite"><div id="url" class="url"></div><div class="tabs" role="tablist" aria-label="Request details">
-<button type="button" role="tab" id="tab-response" data-tab="response" aria-selected="true" aria-controls="content">Response</button><button type="button" role="tab" id="tab-request" data-tab="request" aria-selected="false" aria-controls="content">Request</button><button type="button" role="tab" id="tab-headers" data-tab="headers" aria-selected="false" aria-controls="content">Headers</button><button type="button" role="tab" id="tab-validations" data-tab="validations" aria-selected="false" aria-controls="content">Validations</button>
-</div><div id="content" role="tabpanel" aria-labelledby="tab-response"></div></section></div>
+2) El campo no tiene contenido.</pre></details></section>
 <footer class="small">One case · 2 HTTP exchanges · Sensitive values are masked according to reporter configuration.</footer>
+<noscript><p>This interactive report requires JavaScript.</p><pre class="code">Several failures occurred:
+
+1) DIRECTO != AGENTE
+
+2) El campo no tiene contenido.</pre></noscript>
 </main>
-<script type="application/json" id="case-data">{"duration_ms": 15.16, "exchanges": [{"duration_ms": 2.02, "id": "request-1", "method": "POST", "name": "Obtener token", "request_body": {"client_id": "qa-client", "client_secret": "[REDACTED]", "grant_type": "client_credentials"}, "request_headers": {"Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Content-Length": "97", "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "python-requests/2.34.2"}, "response_body": {"access_token": "[REDACTED]", "token_type": "Bearer"}, "response_headers": {"Content-Length": "76", "Content-Type": "application/json", "Date": "Wed, 30 Sep 2026 22:29:24 GMT", "Server": "BaseHTTP/0.6 Python/3.12.14"}, "status_code": 200, "url": "http://127.0.0.1:44189/oauth/token", "validations": [{"actual": 200, "arguments": [200, "200"], "error": "", "expected": "200", "keyword": "Should Be Equal As Integers", "label": "Verificar c\u00f3digo HTTP", "status": "PASS"}, {"actual": "[REDACTED]", "arguments": ["[REDACTED]"], "error": "", "expected": "non-empty value", "keyword": "Should Not Be Empty", "label": "Verificar token presente", "status": "PASS"}]}, {"duration_ms": 1.13, "id": "request-2", "method": "GET", "name": "Consultar distribuidor", "request_body": null, "request_headers": {"Accept": "application/json", "Accept-Encoding": "gzip, deflate", "Authorization": "[REDACTED]", "Connection": "keep-alive", "User-Agent": "python-requests/2.34.2"}, "response_body": {"activo": true, "curp": "AAAA900101HDFXXX01", "id": 1087, "rfc": "", "tipoDistribuidor": "DIRECTO", "tipoPersona": "FISICA"}, "response_headers": {"Content-Length": "125", "Content-Type": "application/json", "Date": "Wed, 30 Sep 2026 22:29:24 GMT", "Server": "BaseHTTP/0.6 Python/3.12.14"}, "status_code": 200, "url": "http://127.0.0.1:44189/v1/distribuidores/1087", "validations": [{"actual": 200, "arguments": [200, "200"], "error": "", "expected": "200", "keyword": "Should Be Equal As Integers", "label": "Verificar c\u00f3digo HTTP", "status": "PASS"}, {"actual": "DIRECTO", "arguments": ["DIRECTO", "AGENTE"], "error": "DIRECTO != AGENTE", "expected": "AGENTE", "keyword": "Should Be Equal As Strings", "label": "Verificar tipo distribuidor", "status": "FAIL"}, {"actual": "FISICA", "arguments": ["FISICA", "FISICA"], "error": "", "expected": "FISICA", "keyword": "Should Be Equal As Strings", "label": "Verificar tipo persona de distribuidor", "status": "PASS"}, {"actual": "", "arguments": [""], "error": "El campo no tiene contenido.", "expected": "non-empty value", "keyword": "Campo Debe Tener Contenido", "label": "Verificar RFC no vac\u00edo", "status": "FAIL"}, {"actual": "AAAA900101HDFXXX01", "arguments": ["AAAA900101HDFXXX01"], "error": "", "expected": "non-empty value", "keyword": "Campo Debe Tener Contenido", "label": "Verificar CURP no vac\u00eda", "status": "PASS"}]}], "message": "Several failures occurred:\n\n1) DIRECTO != AGENTE\n\n2) El campo no tiene contenido.", "metadata": {"case_id": "DIST-002", "data_row": "2", "distribuidor_id": "1087", "environment": "QA"}, "name": "DIST-002 Validar datos del distribuidor", "source": "/workspace/scratch/a7bba6d522e9/robot-api-report-example/tests/distribuidores.robot", "started": "2026-09-30T22:29:24.760826+00:00", "status": "FAIL", "test_id": "s1-t1"}</script>
+<script type="application/json" id="case-data">{"duration_ms": 18.32, "exchanges": [{"duration_ms": 3.76, "id": "request-1", "method": "POST", "name": "Obtener token", "request_body": {"client_id": "qa-client", "client_secret": "[REDACTED]", "grant_type": "client_credentials"}, "request_headers": {"Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Content-Length": "97", "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "python-requests/2.34.2"}, "response_body": {"access_token": "[REDACTED]", "token_type": "Bearer"}, "response_headers": {"Content-Length": "76", "Content-Type": "application/json", "Date": "Thu, 01 Oct 2026 00:38:08 GMT", "Server": "BaseHTTP/0.6 Python/3.12.14"}, "status_code": 200, "url": "http://127.0.0.1:34181/oauth/token", "validations": [{"actual": 200, "arguments": [200, "200"], "error": "", "expected": "200", "keyword": "Should Be Equal As Integers", "label": "Verificar c\u00f3digo HTTP", "status": "PASS"}, {"actual": "[REDACTED]", "arguments": ["[REDACTED]"], "error": "", "expected": "non-empty value", "keyword": "Should Not Be Empty", "label": "Verificar token presente", "status": "PASS"}]}, {"duration_ms": 1.3, "id": "request-2", "method": "GET", "name": "Consultar distribuidor", "request_body": null, "request_headers": {"Accept": "application/json", "Accept-Encoding": "gzip, deflate", "Authorization": "[REDACTED]", "Connection": "keep-alive", "User-Agent": "python-requests/2.34.2"}, "response_body": {"activo": true, "curp": "AAAA900101HDFXXX01", "id": 1087, "rfc": "", "tipoDistribuidor": "DIRECTO", "tipoPersona": "FISICA"}, "response_headers": {"Content-Length": "125", "Content-Type": "application/json", "Date": "Thu, 01 Oct 2026 00:38:08 GMT", "Server": "BaseHTTP/0.6 Python/3.12.14"}, "status_code": 200, "url": "http://127.0.0.1:34181/v1/distribuidores/1087", "validations": [{"actual": 200, "arguments": [200, "200"], "error": "", "expected": "200", "keyword": "Should Be Equal As Integers", "label": "Verificar c\u00f3digo HTTP", "status": "PASS"}, {"actual": "DIRECTO", "arguments": ["DIRECTO", "AGENTE"], "error": "DIRECTO != AGENTE", "expected": "AGENTE", "keyword": "Should Be Equal As Strings", "label": "Verificar tipo distribuidor", "status": "FAIL"}, {"actual": "FISICA", "arguments": ["FISICA", "FISICA"], "error": "", "expected": "FISICA", "keyword": "Should Be Equal As Strings", "label": "Verificar tipo persona de distribuidor", "status": "PASS"}, {"actual": "", "arguments": [""], "error": "El campo no tiene contenido.", "expected": "non-empty value", "keyword": "Campo Debe Tener Contenido", "label": "Verificar RFC no vac\u00edo", "status": "FAIL"}, {"actual": "AAAA900101HDFXXX01", "arguments": ["AAAA900101HDFXXX01"], "error": "", "expected": "non-empty value", "keyword": "Campo Debe Tener Contenido", "label": "Verificar CURP no vac\u00eda", "status": "PASS"}]}], "execution_errors": [], "message": "Several failures occurred:\n\n1) DIRECTO != AGENTE\n\n2) El campo no tiene contenido.", "metadata": {"case_id": "DIST-002", "data_row": "2", "distribuidor_id": "1087", "environment": "QA"}, "name": "DIST-002 Validar datos del distribuidor", "source": "/workspace/scratch/a7bba6d522e9/robot-api-report-example/tests/distribuidores.robot", "started": "2026-10-01T00:38:08.044438+00:00", "status": "FAIL", "test_id": "s1-t1"}</script>
 <script>
-(()=>{'use strict';const data=JSON.parse(document.getElementById('case-data').textContent);const q=id=>document.getElementById(id);function updateThemeButton(){const dark=document.documentElement.dataset.theme==='dark';q('theme-toggle').textContent=dark?'☀ Light mode':'☾ Dark mode';q('theme-toggle').setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');q('theme-toggle').setAttribute('aria-pressed',String(dark));}q('theme-toggle').addEventListener('click',()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('api-case-reporter-theme',theme);}catch(error){}updateThemeButton();});updateThemeButton();let selected=0,tab='response',view='table';const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const copyIcon='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>';const format=v=>typeof v==='string'?v:JSON.stringify(v,null,2);const body=v=>v===null?'<div class="code">No body</div>':'<pre class="code">'+esc(format(v)).replace(/(&quot;[^\n]*?&quot;)(\s*:)?/g,(m,a,b)=>'<span class="'+(b?'key':'string')+'">'+a+'</span>'+(b||''))+'</pre>';const checks=data.exchanges.flatMap(r=>r.validations);q('request-count').textContent=data.exchanges.length;q('passed').textContent=checks.filter(c=>c.status==='PASS').length;q('failed').textContent=checks.filter(c=>c.status==='FAIL').length;
-function render(){q('requests').innerHTML=data.exchanges.map((r,i)=>'<button type="button" data-request="'+i+'" aria-pressed="'+(i===selected)+'">'+(i+1)+'. '+esc(r.name)+'<small>'+esc(r.method)+' · HTTP '+r.status_code+' · '+r.duration_ms+' ms</small><small class="'+(r.validations.some(c=>c.status==='FAIL')?'fail':'pass')+'">'+(r.validations.length?(r.validations.some(c=>c.status==='FAIL')?'Validation FAIL':'Validation PASS'):'No validations')+'</small></button>').join('');document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));q('content').setAttribute('aria-labelledby','tab-'+tab);if(!data.exchanges.length){q('url').textContent='No completed HTTP exchanges';q('content').innerHTML='<div class="empty">The test completed without capturing a response. See the case status and error above.</div>';return;}const r=data.exchanges[selected];q('url').innerHTML='<div class="row"><strong>'+esc(r.method)+'</strong><span class="badge">HTTP '+r.status_code+'</span><span class="small">'+r.duration_ms+' ms</span></div><code>'+esc(r.url)+'</code>';
-if(tab==='response'||tab==='request'){const side=tab==='response'?'Response':'Request';q('content').innerHTML='<h2>'+side+' body</h2>'+body(r[tab+'_body']);}
-if(tab==='validations'){q('content').innerHTML=r.validations.length?r.validations.map(c=>'<div class="validation"><strong class="'+(c.status==='PASS'?'pass':'fail')+'">'+(c.status==='PASS'?'✓':'×')+' '+c.status+' · '+esc(c.label)+'</strong><p class="small">Keyword: '+esc(c.keyword)+(c.expected!==null?'<br>Expected: '+esc(format(c.expected)):'')+'<br>Actual: '+esc(format(c.actual))+'</p>'+(c.error?'<div class="error">'+esc(c.error)+'</div>':'')+'</div>').join(''):'<div class="empty">No validations recorded for this request.</div>';}
-if(tab==='headers'){q('content').innerHTML='<div class="row"><button data-view="table" aria-pressed="'+(view==='table')+'">Table</button><button data-view="raw" aria-pressed="'+(view==='raw')+'">JSON</button></div>'+['request','response'].map(side=>{const entries=Object.entries(r[side+'_headers']);return '<div class="row" style="margin:16px 0 8px"><h3>'+(side==='request'?'Request':'Response')+' headers</h3><button data-copy="'+side+'" aria-label="Copy '+side+' headers as JSON" title="Copy headers as JSON">'+copyIcon+'</button></div>'+(view==='raw'?body(r[side+'_headers']):'<table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody>'+entries.map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+esc(v)+'</td></tr>').join('')+'</tbody></table>');}).join('')+'<div id="copy-status" role="status" class="small" style="margin-top:10px"></div>';}}
-document.addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.request!==undefined){selected=Number(b.dataset.request);render();}else if(b.dataset.tab){tab=b.dataset.tab;render();}else if(b.dataset.view){view=b.dataset.view;render();}else if(b.dataset.copy){const text=JSON.stringify(data.exchanges[selected][b.dataset.copy+'_headers'],null,2);try{if(!navigator.clipboard)throw Error('Clipboard unavailable');await navigator.clipboard.writeText(text);if(q('copy-status'))q('copy-status').textContent='Headers copied as JSON';}catch(error){if(q('copy-status')){q('copy-status').innerHTML='<label>Copy manually<textarea readonly>'+esc(text)+'</textarea></label>';const field=q('copy-status').querySelector('textarea');field.focus();field.select();}}}});render();})();
+(()=>{
+'use strict';
+const data=JSON.parse(document.getElementById('case-data').textContent);
+const q=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const format=v=>typeof v==='string'?v:JSON.stringify(v,null,2);
+const body=v=>v===null?'<div class="code">No body</div>':'<pre class="code">'+esc(format(v)).replace(/(&quot;[^\n]*?&quot;)(\s*:)?/g,(m,a,b)=>'<span class="'+(b?'key':'string')+'">'+a+'</span>'+(b||''))+'</pre>';
+const copyIcon='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>';
+let selected=0,tab='response',view='table';
+function updateThemeButton(){
+ const dark=document.documentElement.dataset.theme==='dark';
+ q('theme-toggle').textContent=dark?'☀ Light mode':'☾ Dark mode';
+ q('theme-toggle').setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');
+ q('theme-toggle').setAttribute('aria-pressed',String(dark));
+}
+q('theme-toggle').addEventListener('click',()=>{
+ const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';
+ document.documentElement.dataset.theme=theme;
+ try{localStorage.setItem('api-case-reporter-theme',theme);}catch(error){}
+ updateThemeButton();
+});
+updateThemeButton();
+const started=new Date(data.started);
+if(!Number.isNaN(started.getTime()))q('started').textContent=new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'long',timeZone:'UTC'}).format(started);
+const checks=data.exchanges.flatMap(r=>r.validations);
+const failed=data.exchanges.flatMap((r,ri)=>r.validations.map((c,ci)=>({r,c,ri,ci})).filter(x=>x.c.status==='FAIL'));
+const errors=data.execution_errors||[];
+q('request-count').textContent=data.exchanges.length;
+q('assertion-count').textContent=checks.length;
+q('passed').textContent=checks.filter(c=>c.status==='PASS').length;
+q('failed').textContent=failed.length;
+q('failure-count').textContent='('+ (failed.length+errors.length) +')';
+if(failed.length||errors.length||data.status==='FAIL'){
+ q('failure-notice').innerHTML='<div class="notice">'+failed.length+' failed assertions · '+errors.length+' execution errors <button data-section="failures">View failures</button></div>';
+}
+q('failure-table').innerHTML=failed.length?'<table><thead><tr><th>Request / Assertion</th><th>Expected</th><th>Actual</th></tr></thead><tbody>'+failed.map(({r,c,ri,ci})=>'<tr><td><span class="small">'+esc(r.name)+'</span><br><button data-failure-request="'+ri+'" data-assertion="'+ci+'">'+esc(c.label)+'</button></td><td>'+esc(c.expected===null?'See assertion details':format(c.expected))+'</td><td>'+esc(format(c.actual))+'</td></tr>').join('')+'</tbody></table>':'<p class="small">No failed assertions recorded.</p>';
+q('execution-errors').innerHTML=errors.length?errors.map(e=>'<article class="error"><strong>'+esc(e.keyword)+'</strong><div>'+esc(e.message)+'</div></article>').join(''):'<p class="small">No unhandled keyword errors recorded. For failures outside keyword execution, see the original Robot message.</p>';
+function showSection(name){
+ ['summary','requests','failures'].forEach(x=>q('section-'+x).hidden=x!==name);
+ document.querySelectorAll('.sections [data-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.section===name)));
+}
+function methodBadge(method){
+ const known=['GET','POST','PUT','PATCH','DELETE','HEAD','OPTIONS'];
+ return '<span class="badge method '+(known.includes(method)?'method-'+method.toLowerCase():'')+'">'+esc(method)+'</span>';
+}
+function statusBadge(status){
+ const kind=status>=100&&status<200?'info':status>=200&&status<300?'success':status>=300&&status<400?'redirect':status>=400&&status<600?'error':'';
+ return '<span class="badge '+(kind?'http-'+kind:'')+'">HTTP '+esc(status)+'</span>';
+}
+function render(){
+ q('requests').innerHTML=data.exchanges.map((r,i)=>{
+  const failed=r.validations.some(c=>c.status==='FAIL');
+  const state=r.validations.length?(failed?'Assertions FAIL':'Assertions PASS'):'No assertions';
+  return '<button type="button" data-request="'+i+'" aria-pressed="'+(i===selected)+'">'+(i+1)+'. '+esc(r.name)+'<small>'+methodBadge(r.method)+' '+statusBadge(r.status_code)+' · '+r.duration_ms+' ms</small><small class="'+(r.validations.length?(failed?'fail':'pass'):'')+'">'+state+'</small></button>';
+ }).join('');
+ document.querySelectorAll('[data-tab]').forEach(b=>{
+  b.setAttribute('aria-selected',String(b.dataset.tab===tab));
+  b.tabIndex=b.dataset.tab===tab?0:-1;
+ });
+ q('content').setAttribute('aria-labelledby','tab-'+tab);
+ if(!data.exchanges.length){
+  q('url').textContent='No completed HTTP exchanges';
+  q('content').innerHTML='<div class="empty">No response was captured for this case. See Summary and Failures for its final outcome.</div>';return;
+ }
+ const r=data.exchanges[selected];
+ q('url').innerHTML='<div class="row">'+methodBadge(r.method)+statusBadge(r.status_code)+'<span class="small">'+r.duration_ms+' ms</span></div><code>'+esc(r.url)+'</code>';
+ if(tab==='response'||tab==='request')q('content').innerHTML='<h2>'+(tab==='response'?'Response':'Request')+' body</h2>'+body(r[tab+'_body']);
+ if(tab==='assertions')q('content').innerHTML=r.validations.length?r.validations.map((c,i)=>'<article class="validation" id="assertion-'+i+'" tabindex="-1"><strong class="'+(c.status==='PASS'?'pass':'fail')+'">'+(c.status==='PASS'?'✓':'×')+' '+c.status+' · '+esc(c.label)+'</strong><p class="small">Keyword: '+esc(c.keyword)+(c.expected!==null?'<br>Expected: '+esc(format(c.expected)):'')+'<br>Actual: '+esc(format(c.actual))+(c.expected===null?'<br>Arguments: '+esc(format(c.arguments)):'')+'</p>'+(c.error?'<div class="error">'+esc(c.error)+'</div>':'')+'</article>').join(''):'<div class="empty">No assertions recorded for this request.</div>';
+ if(tab==='headers')q('content').innerHTML='<div class="row"><button data-view="table" aria-pressed="'+(view==='table')+'">Table</button><button data-view="raw" aria-pressed="'+(view==='raw')+'">JSON</button></div>'+['request','response'].map(side=>{
+  const entries=Object.entries(r[side+'_headers']);
+  return '<div class="row" style="margin:16px 0 8px"><h3>'+(side==='request'?'Request':'Response')+' headers</h3><button data-copy="'+side+'" aria-label="Copy '+side+' headers as JSON" title="Copy headers as JSON">'+copyIcon+'</button></div>'+(view==='raw'?body(r[side+'_headers']):'<table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody>'+entries.map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+esc(v)+'</td></tr>').join('')+'</tbody></table>');
+ }).join('')+'<div id="copy-status" role="status" class="small" style="margin-top:10px"></div>';
+}
+document.addEventListener('click',async e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.section){showSection(b.dataset.section);}
+ else if(b.dataset.failureRequest!==undefined){
+  selected=Number(b.dataset.failureRequest);tab='assertions';showSection('requests');render();
+  const assertion=q('assertion-'+b.dataset.assertion);assertion.scrollIntoView({block:'center'});assertion.focus({preventScroll:true});
+ }
+ else if(b.dataset.request!==undefined){selected=Number(b.dataset.request);render();}
+ else if(b.dataset.tab){tab=b.dataset.tab;render();}
+ else if(b.dataset.view){view=b.dataset.view;render();}
+ else if(b.dataset.copy){
+  const text=JSON.stringify(data.exchanges[selected][b.dataset.copy+'_headers'],null,2);
+  try{
+   if(!navigator.clipboard)throw Error('Clipboard unavailable');
+   await navigator.clipboard.writeText(text);
+   if(q('copy-status'))q('copy-status').textContent='Headers copied as JSON';
+  }catch(error){
+   if(q('copy-status')){
+    q('copy-status').innerHTML='<label>Copy manually<textarea readonly>'+esc(text)+'</textarea></label>';
+    const field=q('copy-status').querySelector('textarea');field.focus();field.select();
+   }
+  }
+ }
+});
+document.addEventListener('keydown',e=>{
+ const b=e.target.closest('[data-tab]');if(!b||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+ e.preventDefault();const tabs=[...document.querySelectorAll('[data-tab]')];let i=tabs.indexOf(b);
+ i=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
+ tab=tabs[i].dataset.tab;render();tabs[i].focus();
+});
+render();
+})();
 </script>
 </body></html>
