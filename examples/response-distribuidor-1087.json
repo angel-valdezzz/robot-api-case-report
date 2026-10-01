@@ -4,5 +4,22 @@
   "tipoPersona": "FISICA",
   "rfc": "",
   "curp": "AAAA900101HDFXXX01",
-  "activo": true
+  "activo": true,
+  "registration": {
+    "folio": "ALT-1087",
+    "office": {
+      "name": "Centro",
+      "active": true
+    }
+  },
+  "contacts": [
+    {
+      "type": "email",
+      "value": "demo@example.test"
+    },
+    {
+      "type": "phone",
+      "value": "5550000000"
+    }
+  ]
 }

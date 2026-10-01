@@ -21,3 +21,14 @@ DIST-002 Validar datos del distribuidor
     Verificar datos del distribuidor    ${request_id}    ${response}    AGENTE    FISICA
 
     # No hay Generate Report: el listener escribe este HTML en end_test.
+
+DIST-001 Validar distribuidor sin metadatos
+    [Documentation]    Summary completo sin Set Case Metadata; folio consultable en JSON.
+    ${token}=    Obtener token de acceso
+    ${response}    ${request_id}=    Consultar distribuidor    ${token}    1042
+    Verificar código HTTP    ${request_id}    ${response}    200
+    Verificar datos del distribuidor    ${request_id}    ${response}    AGENTE    FISICA
+
+DIST-003 Alta pendiente
+    [Documentation]    Muestra el motivo de SKIP sin inventar requests ni assertions.
+    Skip    El alta está fuera del alcance de este ejemplo.
