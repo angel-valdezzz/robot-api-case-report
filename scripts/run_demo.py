@@ -52,6 +52,11 @@ class API(BaseHTTPRequestHandler):
                     "tipoPersona": "FISICA",
                     "rfc": "AAAA900101XXX",
                     "curp": "AAAA900101HDFXXX01",
+                    "registration": {
+                        "folio": "ALT-1042",
+                        "office": {"name": "Centro", "active": True},
+                    },
+                    "contacts": [{"type": "email", "value": "demo@example.test"}],
                 },
             )
         else:
@@ -96,7 +101,11 @@ def run_suite(server, suite, directory, expected_count):
         test = next(t for t in tests if t.name == case["name"])
         assert case["name"] not in seen
         seen.add(case["name"])
-        is_fail = str(case["metadata"]["distribuidor_id"]) == "1087"
+        if case["status"] == "SKIP":
+            assert test.status == "SKIP" and not case["exchanges"]
+            assert "fuera del alcance" in case["message"]
+            continue
+        is_fail = any("1087" in e["url"] for e in case["exchanges"])
         assert test.status == case["status"] == ("FAIL" if is_fail else "PASS")
         assert len(case["exchanges"]) == 2
         assert case["execution_errors"] == [], (
@@ -104,7 +113,7 @@ def run_suite(server, suite, directory, expected_count):
         )
         assert "Total assertions" in html and "section-failures" in html
         checks = [v for e in case["exchanges"] for v in e["validations"]]
-        assert len(checks) == 7
+        assert len(checks) == 8
         assert sum(v["status"] == "FAIL" for v in checks) == (2 if is_fail else 0)
         assert TOKEN not in html and SECRET not in html
         if is_fail:
@@ -118,7 +127,7 @@ def main():
     worker = Thread(target=server.serve_forever, daemon=True)
     worker.start()
     try:
-        failing = run_suite(server, "distribuidores.robot", "results", 1)
+        failing = run_suite(server, "distribuidores.robot", "results", 3)
         run_suite(server, "distribuidores_ddt.robot", "results-ddt", 2)
         shutil.copyfile(failing, ROOT / "examples/report.html")
     finally:
@@ -126,7 +135,7 @@ def main():
         server.server_close()
         worker.join()
     print(
-        "Verified 3 standalone reports: single case + 2 DataDriver cases. "
+        "Verified 5 standalone reports: 3 individual cases + 2 DataDriver cases. "
         "Expected failures preserved; credentials masked. examples/report.html generated."
     )
 

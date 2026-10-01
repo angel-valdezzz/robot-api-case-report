@@ -1,6 +1,6 @@
 # Robot Framework API Testing
 
-Ejemplo real de **RequestReporter 0.3.1**, instalado desde PyPI. Genera un HTML
+Ejemplo real de **RequestReporter 0.4.0**, instalado desde PyPI. Genera un HTML
 independiente por caso con sus requests, responses, headers y validaciones.
 Cada archivo funciona sin conexión y puede adjuntarse individualmente a Jira.
 
@@ -16,7 +16,7 @@ poetry run python scripts/run_demo.py
 ```
 
 El script inicia una API ficticia en localhost, ejecuta ambas suites y verifica
-el estado de cada caso, siete assertions, aislamiento de los reportes y ocultación
+el estado de cada caso, ocho assertions, aislamiento de los reportes y ocultación
 de las credenciales ficticias. Se espera un caso fallido en cada suite: la demostración
 comprueba esos fallos y termina correctamente solo si los resultados son los esperados.
 No hace falta configurar un servidor externo ni credenciales reales.
@@ -37,7 +37,7 @@ ya no es un boceto con datos incrustados manualmente.
 
 | Archivo | Propósito |
 |---|---|
-| `tests/distribuidores.robot` | Caso individual con dos requests y siete assertions. |
+| `tests/distribuidores.robot` | Tres casos: FAIL con metadatos, PASS sin metadatos y SKIP. Cada caso HTTP tiene dos requests y ocho assertions. |
 | `tests/distribuidores_ddt.robot` | Alternativa con DataDriver y dos casos independientes. |
 | `resources/services/distribuidores.resource` | POST del token y GET de consulta con RequestsLibrary. |
 | `resources/assertions/distribuidores.resource` | Assertions de negocio y continuación nativa de Robot. |
@@ -105,7 +105,7 @@ la copia contiene JSON indentado con los valores sensibles ocultos.
 [Paquete en PyPI](https://pypi.org/project/robotframework-request-reporter/)
 
 La Action de este repositorio instala la versión publicada y ejecuta la misma
-demostración. Sus artefactos contienen únicamente los tres HTML por caso.
+demostración. Sus artefactos contienen únicamente los cinco HTML por caso.
 
 ## Sintaxis nativa de Robot Framework 7.5
 
@@ -135,3 +135,9 @@ poetry run robocop format
 La rama principal es `main`; los cambios entran mediante pull requests y CI. La configuración de VS Code aplica formato al guardar con Ruff y RoboCop a través de RobotCode.
 
 `Capture Response` registra una respuesta que ya existe: no ejecuta HTTP. El ID devuelto solo vincula esa evidencia con sus assertions. Los services y assertions de este ejemplo importan `RequestReporter`: sustituir el reporter requiere cambiar esas llamadas, pero no las rutas HTTP ni los datos de negocio. La librería acepta cualquier `requests.Response` y no exige estas carpetas. Los metadatos son claves opcionales definidas por cada proyecto; `case_id` es un identificador externo, mientras que el título siempre viene del nombre del test de Robot.
+
+## Explorar el reporte
+
+El demo genera cinco HTML: caso fallido con metadatos, caso aprobado sin metadatos, SKIP y dos casos DataDriver. Cada caso HTTP registra dos requests y ocho assertions; los dos fallos del distribuidor 1087 son intencionales. El folio se valida con una keyword de negocio y se consulta en el response body.
+
+Summary permite abrir una request desde la tabla. En los bodies puedes buscar `folio`, plegar objetos, cambiar entre Formatted/Raw y copiar el contenido completo. Assertions permite filtrar All/Failed/Passed. No se agregan Results, logs ni PDF.
